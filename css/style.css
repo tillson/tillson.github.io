@@ -1,0 +1,25 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+
+body {
+    font-family: 'Open Sans', arial; 
+    background-color: #F0F0F0;
+    text-align:center;
+}
+
+.name {
+    font-size:5em;
+    margin-top:100px;
+    margin-bottom:-15;
+    font-weight:300;
+}
+.dev {
+    font-size:28px;
+    margin-bottom:50px;
+    
+}
+a {
+    text-decoration:none;
+}
+hr {
+    margin-top: 100px;
+}
