@@ -1,0 +1,1 @@
+defaults write com.apple.dock expose-animation-duration -float 1; killall Dock;
