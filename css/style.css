@@ -1,25 +1,83 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+@import url(/web/20160418012522/http://fonts.googleapis.com/css?family=Roboto:100,300,400,700);
 
 body {
-    font-family: 'Open Sans', arial; 
+    font-family: 'Roboto', arial;
     background-color: #F0F0F0;
     text-align:center;
+    width: 100%;
+    margin:0;
+    font-weight: 100;
+    padding-bottom: 40px;
+}
+
+img {
+  border-style: solid;
+  border-width: 2px;
+}
+
+h1 {
+  font-weight: 100;
+  font-size: 3em;
+}
+
+h2 {
+  font-weight: 300;
+  font-size: 2em;
+}
+
+p {
+  font-weight: 400;
+}
+
+b {
+  font-weight: 700;
 }
 
 .name {
     font-size:5em;
     margin-top:100px;
-    margin-bottom:-15;
-    font-weight:300;
+    margin-bottom: -10px;
+    font-weight:100;
 }
+
 .dev {
     font-size:28px;
-    margin-bottom:50px;
-    
+    margin-bottom:20px;
+    font-weight: 300;
 }
+
+.contact {
+    font-weight: 300;
+}
+
+.portfolio {
+    background-color: #6A90FC;
+    height: 2000px;
+    padding: 0;
+    width: 100%;
+    font-weight: 300;
+}
+
+.portfolioTitle {
+    color: #ffffff;
+    font-size: 5em;
+    font-weight: 100;
+    padding-top: 40px;
+    font-weight: 100;
+}
+
+.projectTitle {
+    color: #ffffff;
+    font-size: 4em;
+    font-weight: 100;
+    padding-top: 30px;
+
+}
+
+hr {
+  border-color: #aaa;
+}
+
 a {
     text-decoration:none;
-}
-hr {
-    margin-top: 100px;
 }
