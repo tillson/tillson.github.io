@@ -1,0 +1,278 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Porter-Gaud CTF Technical Write-up</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=69f6bccd8c">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+
+    <meta property="og:site_name" content="Tillson Galloway">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Porter-Gaud CTF Technical Write-up">
+    <meta property="og:description" content="On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts. Inception After competing in the NodeSC 2016 CTF and PCDC here in Charleston,">
+    <meta property="og:url" content="http://tillsongalloway.com/blog/pgctf-2017/">
+    <meta property="article:published_time" content="2017-03-02T20:30:29.000Z">
+    <meta property="article:modified_time" content="2017-03-02T20:32:11.000Z">
+    <meta property="article:tag" content="cybersecurity">
+    <meta property="article:tag" content="high school">
+    <meta property="article:tag" content="porter-gaud">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Porter-Gaud CTF Technical Write-up">
+    <meta name="twitter:description" content="On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts. Inception After competing in the NodeSC 2016 CTF and PCDC here in Charleston,">
+    <meta name="twitter:url" content="http://tillsongalloway.com/blog/pgctf-2017/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Tillson Galloway">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="cybersecurity, high school, porter-gaud">
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Tillson Galloway",
+        "logo": "http://tillsongalloway.com/blog/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Tillson Galloway",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/94c1f83c137e51f10cc475e4a57b321e?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://tillsongalloway.com/blog/author/tillson/",
+        "sameAs": []
+    },
+    "headline": "Porter-Gaud CTF Technical Write-up",
+    "url": "http://tillsongalloway.com/blog/pgctf-2017/",
+    "datePublished": "2017-03-02T20:30:29.000Z",
+    "dateModified": "2017-03-02T20:32:11.000Z",
+    "keywords": "cybersecurity, high school, porter-gaud",
+    "description": "On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts. Inception After competing in the NodeSC 2016 CTF and PCDC here in Charleston,",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://tillsongalloway.com/blog/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Tillson Galloway" href="../rss/index.html">
+</head>
+<body class="post-template tag-cybersecurity tag-high-school tag-porter-gaud nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="../">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="../rss/index.rss">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post tag-cybersecurity tag-high-school tag-porter-gaud">
+
+        <header class="post-header">
+            <h1 class="post-title">Porter-Gaud CTF 2017</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2017-03-02">02 March 2017</time>  on <a href="../tag/cybersecurity/">cybersecurity</a>, <a href="../tag/high-school/">high school</a>, <a href="../tag/porter-gaud/">porter-gaud</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts.</p>
+
+<h4 id="inception">Inception</h4>
+
+<p>After competing in the <a href="https://nodesc.org/">NodeSC</a> 2016 CTF and <a href="http://pcdc-sc.com/">PCDC</a> here in Charleston, we immediately knew that we wanted to run our own capture-the-flag competition.  We went to Doug Bergman, the computer science chair at Porter-Gaud, and began to make the idea a reality. </p>
+
+<h4 id="designingtheproblems">Designing the Problems</h4>
+
+<p>My personal Computer Science III (a semester class at Porter-Gaud) was to design and create the competition, which proved to be time-consuming.</p>
+
+<p>While the problems were presented in a conquer-the-world style using the FBCTF platform on the day of the competition, we used the layout of a Jeopardy board to keep track of progress and ensure equality between categories (originally, problems ranged from 50-500 points, but the scale was eventually changed to 25-350 points). <br>
+Each problem was designed and then developed by one of the three of us. <br>
+As web is my speciality, I took that and the algorithm category, while Charles developed the ArchLinux category.  We worked together to fill the forensics/crypto/misc categories. <br>
+<img src="../content/images/2017/02/IMG_0739.jpg" alt="Development board">
+In this picture, you can see the Jeopardy board that lived in the Porter-Gaud computer lab from September-January with all of the problems from the competition, along with a few that did not make it to the competition for various reasons (difficulty, time constraints, too many problems)</p>
+
+<p>After developing a problem, we would test it on each other for difficulty and usability.  </p>
+
+<h4 id="reachingout">Reaching Out</h4>
+
+<p>The hardest part of organizing PGCTF was reaching out and getting teams to sign up. <br>
+We officially announced the competition in early-November, but we did not have enough teams to successfully run the competition until early January.  Teams continued rolling in up until four days before the competition. <br>
+Next year, we're planning to improve our outreach.</p>
+
+<h4 id="techweek">Tech Week</h4>
+
+<p><em>(warning: technical section)</em></p>
+
+<p>The final step in putting together the CTF was setting up the infrastructure. <br>
+While we initially planned to have multiple servers (scoreboard, web problems, file server), we abandoned this idea due to a lack of resources and used one server running Ubuntu.</p>
+
+<h6 id="qualityassurance">Quality Assurance</h6>
+
+<p>During the pre-competition week, we made it a goal to work through all of the problems to ensure that they were solvable, the anticipated difficulty, and fun to solve. <br>
+This led us to change point values of a few problems (ADFGX, for example).</p>
+
+<h6 id="problemservers">Problem Servers</h6>
+
+<p>We used <a href="https://www.docker.com/">Docker</a> to handle having multiple interfaces and therefore multiple IP addresses leading to different websites.  Docker also allowed for us to isolate problems for each other due to the exploitative nature of the competition (for example, <a href="https://github.com/tillson/pgctf-problems/tree/master/web/I-cant-c">Imgur 2.0</a> was solvable by obtaining a shell on the host server) <br>
+For the <a href="https://github.com/tillson/pgctf-problems/tree/master/web">web problems</a> and <a href="https://github.com/tillson/pgctf-problems/tree/master/algorithm/algo2">Algorithm 1</a>, we had to host webservers.  We didn't want to bloat the ports on one host, so we used a trick with Docker and interfaces to create an illusion of there being multiple servers.  </p>
+
+<p>In order to create these interfaces, we used <a href="https://jpetazzo.github.io/2013/10/16/configure-docker-bridge-network/">this</a> guide, which led to:  </p>
+
+<pre><code>$ ip link add icantc type bridge
+$ ip addr add 10.0.0.21 dev icantc
+$ ip link set icantc up
+</code></pre>
+
+<p>Becuase of an issue with the <code>/etc/network/interfaces</code> file (most likely caused by syntax issues) discovered the night before the competition, we wrote a script that we would run whenever the master server came up.</p>
+
+<h6 id="dockerfiles">Dockerfiles</h6>
+
+<p>In order to set up the problem servers, we had to set up Dockerfiles for each of the web-based problems.  While <a href="https://github.com/tillson/pgctf-problems/blob/master/web/misc-web-server/Dockerfile">Apache/PHP Dockerfiles</a> were pretty easy, we were unable to fully setup NodeJS ones.  We wound up having to manually start the NodeJS instance within the Docker containers on competition-day. </p>
+
+<h6 id="wifiorethernet">Wifi or Ethernet?</h6>
+
+<p>During the pre-competition week, we had to build the full network.  The biggest disagreement between the PGCTF Team was whether to use WiFi or to stick to Ethernet.  While Wifi would be more convenient, it was more prone to breaking during the course of the competition.  Ethernet would be more stable, but users with newer computers may require an adapter.We eventually settled on using Wifi with a Switch in the room if a team opted to use Ethernet.</p>
+
+<h6 id="thenightmareofdhcp">The Nightmare of DHCP</h6>
+
+<p>One problem that came up after creating these interfaces was that computers connecting to the access point would be assigned the same IP as one of our defined interfaces on the server, and would not be able to connect to anything (and would break the problem).  We solved this by modifying the DHCP scope to exclude the 10.1.10.20-30 IP range, which was dedicated to problems.</p>
+
+<p><img src="../content/images/2017/02/Untitled.png" alt="">
+Here's an MS-Paint rendition of the network diagram.</p>
+
+<h6 id="documents">Documents</h6>
+
+<p>On Friday night, we finalized the competition scope and printed the documents that were distributed to each team with rules/schedule/scope of the competition.  We also finalized the intro powerpoint and the itinerary for the day.</p>
+
+<h4 id="competitionday">Competition Day</h4>
+
+<p>Arriving at Porter-Gaud around 8:45 for the 9:00 start, I was impressed to see that teams had already begun arriving and were setting up their team spaces. <br>
+As I walked in and noticed the list of IP addresses both printed on each team's table and on the whiteboard, I realized that the web servers were all up and could be exploited before the intended start time.  Luckily, I realized this before the teams did and shut them down. <br>
+At 9:15, about fifteen minutes before the originally planned start time, all teams were ready to go and we began the competition.</p>
+
+<p>Though there were a few mishaps throughout the day (a file missing from a problem, for example), everything ran <em>extremely</em> smoothly. <br>
+Teams solved the <a href="https://github.com/tillson/pgctf-problems/tree/master/misc/recon/Tillson">Tillson Galloway recon</a> problem much faster than I expected them to, and it was very rewarding watching teams finally solve the last step of the problem. <br>
+<a href="https://github.com/tillson/pgctf-problems/tree/master/forensics/the-d-in-detroit">The D in Detroit</a> was also a favorite of both organizers and participants, and all teams eventually solved it (though the room was filled with static noises for the first two hours).</p>
+
+<p>While I expected the competition to die down around 1:30 as in past CTFs I've competed in, teams stayed interested and kept the fight for first/second place intact until the last minute.</p>
+
+<h4 id="afterthecompetition">After the Competition</h4>
+
+<h6 id="survey">Survey</h6>
+
+<p>A few days after the competition, I sent out an email with resources to future CTFs and an anonymous survey for PGCTF.  The survey truly will help us outline next year's competition as it was the most direct way to give feedback. </p>
+
+<p>A couple of stats from the survey: <br>
+Favorite problems were: <br>
+* <a href="https://github.com/tillson/pgctf-problems/tree/master/crypto/ADFGX">ADFGX (Crypto)</a> <br>
+* <a href="https://github.com/tillson/pgctf-problems/tree/master/misc/recon/Tillson">Tillson Galloway (Recon/Misc)</a> <br>
+* <a href="https://github.com/tillson/pgctf-problems/tree/master/forensics/the-d-in-detroit">The D in Detroit (Forensics)</a></p>
+
+<h4 id="afterthoughts">Afterthoughts</h4>
+
+<h6 id="lessonslearned">Lessons Learned</h6>
+
+<p>Proofreading and testing the problems before the competition is essential.  There were two instances throughout the day where a web problem link was either wrong or the problem was missing entirely.</p>
+
+<p>We also found that one area we can improve in is evaluating problem difficulty.  There were instances where problems that were meant to be easy ended up being much harder than anticipated, which steered teams away from the category at large (<a href="https://github.com/tillson/pgctf-problems/tree/master/web/ecorp-internal">E-Corp Internal</a> and <a href="https://github.com/tillson/pgctf-problems/tree/master/Archlinux%20VM">ArchLinux</a>, for example).  We'll try to provide better resources for training next year, and we may release challenge problems throughout the year.</p>
+
+<h6 id="nextyear">Next Year</h6>
+
+<p>Next year, we also want to have a more interactive experience the day of the game, expanding upon the MS08-067 Windows XP image released mid-game in order to keep the game lively.</p>
+
+<h4 id="whatsnext">What's Next?</h4>
+
+<p>The Dangling Pointers will be competing in EasyCTF next week as well as The Palmetto Cyber Defense Competition on 8 April.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/tillson/" style="background-image: url(http://www.gravatar.com/avatar/94c1f83c137e51f10cc475e4a57b321e?s&amp;)"><span class="hidden">Tillson Galloway's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/tillson/">Tillson Galloway</a></h4>
+
+                    <p>Read <a href="../author/tillson/">more posts</a> by this author.</p>
+                <div class="author-meta">
+
+
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Porter-Gaud%20CTF%202017&amp;url=http://tillsongalloway.com/blog/pgctf-2017/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://tillsongalloway.com/blog/pgctf-2017/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://tillsongalloway.com/blog/pgctf-2017/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="../">Tillson Galloway</a> © 2017</section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=69f6bccd8c"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=69f6bccd8c"></script>
+
+</body>
