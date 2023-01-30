@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Running a CTF: Insight into Porter-Gaud CTF 2017</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css?v=a98c78c9f1" />
+
+    <meta name="description" content="On 28 January, we ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security event for high-schoolers around South Carolina." />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="index.html" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <link rel="amphtml" href="amp/index.html" />
+
+    <meta property="og:site_name" content="Tales of a Postgraduate Nothing" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Running a CTF: Insight into Porter-Gaud CTF 2017" />
+    <meta property="og:description" content="On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts." />
+    <meta property="og:url" content="https://tillsongalloway.com/porter-gaud-ctf-2017/" />
+    <meta property="og:image" content="https://tillsongalloway.com/content/images/2020/05/PGCTF.png" />
+    <meta property="article:published_time" content="2018-12-15T23:12:19.000Z" />
+    <meta property="article:modified_time" content="2020-05-11T05:11:32.000Z" />
+    <meta property="article:tag" content="cybersecurity" />
+    <meta property="article:tag" content="writeup" />
+    <meta property="article:tag" content="technical" />
+    <meta property="article:tag" content="CTF" />
+    <meta property="article:tag" content="hacking" />
+    <meta property="article:tag" content="events" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Running a CTF: Insight into Porter-Gaud CTF 2017" />
+    <meta name="twitter:description" content="On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts." />
+    <meta name="twitter:url" content="https://tillsongalloway.com/porter-gaud-ctf-2017/" />
+    <meta name="twitter:image" content="https://tillsongalloway.com/content/images/2020/05/PGCTF.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Tillson Galloway" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="cybersecurity, writeup, technical, CTF, hacking, events" />
+    <meta name="twitter:site" content="@tillson_" />
+    <meta name="twitter:creator" content="@tillson" />
+    <meta property="og:image:width" content="700" />
+    <meta property="og:image:height" content="553" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Tales of a Postgraduate Nothing",
+        "url": "https://tillsongalloway.com/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://tillsongalloway.com/favicon.ico",
+            "width": 48,
+            "height": 48
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Tillson Galloway",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://tillsongalloway.com/content/images/2018/12/Zyq6A600_400x400.jpg",
+            "width": 400,
+            "height": 400
+        },
+        "url": "https://tillsongalloway.com/author/tillson/",
+        "sameAs": [
+            "https://twitter.com/tillson"
+        ]
+    },
+    "headline": "Running a CTF: Insight into Porter-Gaud CTF 2017",
+    "url": "https://tillsongalloway.com/porter-gaud-ctf-2017/",
+    "datePublished": "2018-12-15T23:12:19.000Z",
+    "dateModified": "2020-05-11T05:11:32.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://tillsongalloway.com/content/images/2020/05/PGCTF.png",
+        "width": 700,
+        "height": 553
+    },
+    "keywords": "cybersecurity, writeup, technical, CTF, hacking, events",
+    "description": "On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://tillsongalloway.com/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 3.17" />
+    <link rel="alternate" type="application/rss+xml" title="Tales of a Postgraduate Nothing" href="../rss/index.html" />
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K3L6XN4');</script>
+<!-- End Google Tag Manager -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2111385271642266" crossorigin="anonymous"></script>
+    
+</head>
+<body class="post-template tag-cybersecurity tag-writeup tag-technical tag-ctf tag-hacking tag-events">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3L6XN4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <div class="site-wrapper">
+
+
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+                <a class="site-nav-logo" href="../index.html">Tales of a Postgraduate Nothing</a>
+    </div>
+    <div class="site-nav-right">
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post tag-cybersecurity tag-writeup tag-technical tag-ctf tag-hacking tag-events ">
+
+            <header class="post-full-header">
+                <section class="post-full-meta">
+                    <time class="post-full-meta-date" datetime="2018-12-15">15 December 2018</time>
+                        <span class="date-divider">/</span> <a href="../tag/cybersecurity/index.html">cybersecurity</a>
+                </section>
+                <h1 class="post-full-title">Running an Introductory Level CTF: Insight into Porter-Gaud CTF 2017</h1>
+            </header>
+
+            <figure class="post-full-image" style="background-image: url(../content/images/2020/05/PGCTF.png)">
+            </figure>
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p>On 28 January, we (Charles Truluck, Cameron Hay, and myself) ran the inaugural Porter-Gaud CTF competition, an introductory cyber-security red team competition designed to give high schoolers from around South Carolina a hands-on experience with security concepts.</p><h4 id="inception">Inception</h4><p>After competing in the <a href="https://nodesc.org/">NodeSC</a> 2016 CTF and <a href="http://pcdc-sc.com/">PCDC</a> here in Charleston, we immediately knew that we wanted to run our own capture-the-flag competition. We went to Doug Bergman, the computer science chair at Porter-Gaud, and began to make the idea a reality.</p><h4 id="designing-the-problems">Designing the Problems</h4><p>My personal Computer Science III (a semester class at Porter-Gaud) was to design and create the competition, which proved to be time-consuming.</p><figure class="kg-card kg-image-card"><img src="../content/images/2018/12/IMG_0739.jpg" class="kg-image" alt="Development board"></figure><p>In this picture, you can see the Jeopardy board that lived in the Porter-Gaud computer lab from September-January with all of the problems from the competition, along with a few that did not make it to the competition for various reasons (difficulty, time constraints, too many problems)</p><p>After developing a problem, we would test it on each other for difficulty and usability.</p><h4 id="reaching-out">Reaching Out</h4><p>The hardest part of organizing PGCTF was reaching out and getting teams to sign up. <br>We officially announced the competition in early-November, but we did not have enough teams to successfully run the competition until early January. Teams continued rolling in up until four days before the competition. <br>Next year, we're planning to improve our outreach.</p><h4 id="tech-week">Tech Week</h4><p><em>(warning: technical section)</em></p><p>The final step in putting together the CTF was setting up the infrastructure. <br>While we initially planned to have multiple servers (scoreboard, web problems, file server), we abandoned this idea due to a lack of resources and used one server running Ubuntu.</p><h6 id="quality-assurance">Quality Assurance</h6><p>During the pre-competition week, we made it a goal to work through all of the problems to ensure that they were solvable, the anticipated difficulty, and fun to solve. <br>This led us to change point values of a few problems (ADFGX, for example).</p><h6 id="problem-servers">Problem Servers</h6><p>We used <a href="https://www.docker.com/">Docker</a> to handle having multiple interfaces and therefore multiple IP addresses leading to different websites. Docker also allowed for us to isolate problems for each other due to the exploitative nature of the competition (for example, <a href="https://github.com/tillson/pgctf-problems/tree/master/web/I-cant-c">Imgur 2.0</a> was solvable by obtaining a shell on the host server) <br>For the <a href="https://github.com/tillson/pgctf-problems/tree/master/web">web problems</a> and <a href="https://github.com/tillson/pgctf-problems/tree/master/algorithm/algo2">Algorithm 1</a>, we had to host webservers. We didn't want to bloat the ports on one host, so we used a trick with Docker and interfaces to create an illusion of there being multiple servers.</p><p>In order to create these interfaces, we used <a href="https://jpetazzo.github.io/2013/10/16/configure-docker-bridge-network/">this</a> guide, which led to:</p><pre><code>$ ip link add icantc type bridge
+$ ip addr add 10.0.0.21 dev icantc
+$ ip link set icantc up
+</code></pre><p>Becuase of an issue with the <code>/etc/network/interfaces</code> file (most likely caused by syntax issues) discovered the night before the competition, we wrote a script that we would run whenever the master server came up.</p><h6 id="dockerfiles">Dockerfiles</h6><p>In order to set up the problem servers, we had to set up Dockerfiles for each of the web-based problems. While <a href="https://github.com/tillson/pgctf-problems/blob/master/web/misc-web-server/Dockerfile">Apache/PHP Dockerfiles</a> were pretty easy, we were unable to fully setup NodeJS ones. We wound up having to manually start the NodeJS instance within the Docker containers on competition day.</p><h6 id="wifi-or-ethernet">Wifi or Ethernet?</h6><p>During the pre-competition week, we had to build the full network. The biggest disagreement between the PGCTF Team was whether to use WiFi or to stick to Ethernet. While Wifi would be more convenient, it was more prone to breaking during the course of the competition. Ethernet would be more stable, but users with newer computers may require an adapter.We eventually settled on using Wifi with a Switch in the room if a team opted to use Ethernet.</p><h6 id="the-nightmare-of-dhcp">The Nightmare of DHCP</h6><p>One problem that came up after creating these interfaces was that computers connecting to the access point would be assigned the same IP as one of our defined interfaces on the server, and would not be able to connect to anything (and would break the problem). We solved this by modifying the DHCP scope to exclude the 10.1.10.20-30 IP range, which was dedicated to problems.</p><figure class="kg-card kg-image-card"><img src="http://tillsongalloway.com/blog/content/images/2017/02/Untitled.png" class="kg-image"></figure><p>Here's an MS-Paint rendition of the network diagram.</p><figure class="kg-card kg-image-card"><img src="../content/images/2018/12/Untitled.png" class="kg-image"></figure><h6 id="documents">Documents</h6><p>On Friday night, we finalized the competition scope and printed the documents that were distributed to each team with rules/schedule/scope of the competition. We also finalized the intro powerpoint and the itinerary for the day.</p><h4 id="competition-day">Competition Day</h4><p>Arriving at Porter-Gaud around 8:45 for the 9:00 start, I was impressed to see that teams had already begun arriving and were setting up their team spaces. <br>As I walked in and noticed the list of IP addresses both printed on each team's table and on the whiteboard, I realized that the web servers were all up and could be exploited before the intended start time. Luckily, I realized this before the teams did and shut them down. <br>At 9:15, about fifteen minutes before the originally planned start time, all teams were ready to go and we began the competition.</p><p>Though there were a few mishaps throughout the day (a file missing from a problem, for example), everything ran <em>extremely</em> smoothly. <br>Teams solved the <a href="https://github.com/tillson/pgctf-problems/tree/master/misc/recon/Tillson">Tillson Galloway recon</a> problem much faster than I expected them to, and it was very rewarding watching teams finally solve the last step of the problem. <br><a href="https://github.com/tillson/pgctf-problems/tree/master/forensics/the-d-in-detroit">The D in Detroit</a> was also a favorite of both organizers and participants, and all teams eventually solved it (though the room was filled with static noises for the first two hours).</p><p>While I expected the competition to die down around 1:30 as in past CTFs I've competed in, teams stayed interested and kept the fight for first/second place intact until the last minute.</p><h4 id="after-the-competition">After the Competition</h4><h6 id="survey">Survey</h6><p>A few days after the competition, I sent out an email with resources to future CTFs and an anonymous survey for PGCTF. The survey truly will help us outline next year's competition as it was the most direct way to give feedback.</p><p>A couple of stats from the survey: <br>Favorite problems were: <br>* <a href="https://github.com/tillson/pgctf-problems/tree/master/crypto/ADFGX">ADFGX (Crypto)</a> <br>* <a href="https://github.com/tillson/pgctf-problems/tree/master/misc/recon/Tillson">Tillson Galloway (Recon/Misc)</a> <br>* <a href="https://github.com/tillson/pgctf-problems/tree/master/forensics/the-d-in-detroit">The D in Detroit (Forensics)</a></p><h4 id="afterthoughts">Afterthoughts</h4><h6 id="lessons-learned">Lessons Learned</h6><p>Proofreading and testing the problems before the competition is essential. There were two instances throughout the day where a web problem link was either wrong or the problem was missing entirely.</p><p>We also found that one area we can improve in is evaluating problem difficulty. There were instances where problems that were meant to be easy ended up being much harder than anticipated, which steered teams away from the category at large (<a href="https://github.com/tillson/pgctf-problems/tree/master/web/ecorp-internal">E-Corp Internal</a> and <a href="https://github.com/tillson/pgctf-problems/tree/master/Archlinux%20VM">ArchLinux</a>, for example). We'll try to provide better resources for training next year, and we may release challenge problems throughout the year.</p><h6 id="next-year">Next Year</h6><p>Next year, we also want to have a more interactive experience the day of the game, expanding upon the MS08-067 Windows XP image released mid-game in order to keep the game lively.</p><h4 id="what-s-next">What's Next?</h4><p>The Dangling Pointers will be competing in EasyCTF next week as well as The Palmetto Cyber Defense Competition on 8 April.</p><h4 id="thank-you">Thank You</h4><p>I'd like to close this writeup with a thank you to the following people for their help with the event:</p><ul><li><strong><strong>Charles Truluck</strong></strong>, for both helping build and setup the server as well as for building and testing problems</li><li><strong><strong>Cameron Hay</strong></strong>, for work on the cryptography category and support for teams on the day of the event.</li><li><strong><strong>Bryan Luce and Doug Bergman</strong></strong>, for all around support and motivation for running the event, advising us during the production of it, and handling communication with the school administration in order to legitimize the event.</li><li><strong><strong>Phil Zaubi</strong></strong>, for setting up the final networking component of the event.</li></ul><p></p><p><em>Originally published 2 March 2017</em></p>
+                </div>
+            </section>
+
+
+            <footer class="post-full-footer">
+
+
+
+<section class="author-card">
+        <img class="author-profile-image" src="../content/images/2018/12/Zyq6A600_400x400.jpg" alt="Tillson Galloway" />
+    <section class="author-card-content">
+        <h4 class="author-card-name"><a href="../author/tillson/index.html">Tillson Galloway</a></h4>
+            <p>Georgia Tech &#x27;22, iOS and Web developer, Information Security enthusiast
+</p>
+    </section>
+</section>
+<div class="post-full-footer-right">
+    <a class="author-card-button" href="../author/tillson/index.html">Read More</a>
+</div>
+
+
+            </footer>
+
+
+        </article>
+
+    </div>
+</main>
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+                <article class="read-next-card"
+
+                >
+                    <header class="read-next-card-header">
+                        <small class="read-next-card-header-sitetitle">&mdash; Tales of a Postgraduate Nothing &mdash;</small>
+                        <h3 class="read-next-card-header-title"><a href="../tag/cybersecurity/index.html">cybersecurity</a></h3>
+                    </header>
+                    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                    <div class="read-next-card-content">
+                        <ul>
+                            <li><a href="../finding-sensitive-information-on-github/index.html">How I made $10K in bug bounties from GitHub secret leaks</a></li>
+                        </ul>
+                    </div>
+                    <footer class="read-next-card-footer">
+                        <a href="../tag/cybersecurity/index.html">1 post →</a>
+                    </footer>
+                </article>
+
+                <article class="post-card post tag-philosophy tag-literature tag-taoism no-image no-image">
+    <div class="post-card-content">
+        <a class="post-card-content-link" href="../taoism-in-slaughterhouse-five/index.html">
+            <header class="post-card-header">
+                    <span class="post-card-tags">philosophy</span>
+                <h2 class="post-card-title">Nothing Lasts, but Nothing is Lost: Taoist Ideology in Slaughterhouse Five’s Tralfamadorians</h2>
+            </header>
+            <section class="post-card-excerpt">
+                <p>The Tralfamadorian worldview of Slaughterhouse Five fame surrenders to time's unrelenting waters, its central axiom being that “the moment simply is."  Tralfamadorian physics lead us to question our perceptions of time.</p>
+            </section>
+        </a>
+        <footer class="post-card-meta">
+
+            <ul class="author-list">
+                <li class="author-list-item">
+
+                    <div class="author-name-tooltip">
+                        Tillson Galloway
+                    </div>
+
+                        <a href="../author/tillson/index.html" class="static-avatar"><img class="author-profile-image" src="../content/images/2018/12/Zyq6A600_400x400.jpg" alt="Tillson Galloway" /></a>
+                </li>
+            </ul>
+        </footer>
+    </div>
+</article>
+
+
+        </div>
+    </div>
+</aside>
+
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="../index.html">
+            <span>Tales of a Postgraduate Nothing</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">Running an Introductory Level CTF: Insight into Porter-Gaud CTF 2017</div>
+    <progress id="reading-progress" class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="../index.html">© 2020 Tillson Galloway</a></section>
+                <nav class="site-footer-nav">
+                    <a href="../index.html">Home</a>
+                    <a href="https://github.com/tillson" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://linkedin.com/in/tillson" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://twitter.com/tillson_" target="_blank" rel="noopener">Twitter</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script>
+        var images = document.querySelectorAll('.kg-gallery-image img');
+        images.forEach(function (image) {
+            var container = image.closest('.kg-gallery-image');
+            var width = image.attributes.width.value;
+            var height = image.attributes.height.value;
+            var ratio = width / height;
+            container.style.flex = ratio + ' 1 0%';
+        })
+    </script>
+
+
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="../assets/built/jquery.fitvids.js?v=a98c78c9f1"></script>
+
+
+    <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('#reading-progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+
+});
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>How I made $10K in bug bounties from GitHub secret leaks</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css?v=a98c78c9f1" />
+
+    <meta name="description" content="Hacker can steal leaked API keys, passwords, and customer data from GitHub to login to servers, steal personal information, and rack up absurd AWS charges. This article explains shows common types of secrets that users post and how to find them." />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="index.html" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <link rel="amphtml" href="amp/index.html" />
+
+    <meta property="og:site_name" content="Tales of a Postgraduate Nothing" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="How I made $10K in bug bounties from GitHub secret leaks" />
+    <meta property="og:description" content="Hacker can steal leaked API keys, passwords, and customer data from GitHub to login to servers, steal personal information, and rack up absurd AWS charges. This article explains shows common types of secrets that users post and how to find them." />
+    <meta property="og:url" content="https://tillsongalloway.com/finding-sensitive-information-on-github/" />
+    <meta property="og:image" content="https://tillsongalloway.com/content/images/2020/05/Screen-Shot-2020-05-11-at-1.05.48-AM.png" />
+    <meta property="article:published_time" content="2020-05-10T21:05:56.000Z" />
+    <meta property="article:modified_time" content="2020-05-26T21:21:11.000Z" />
+    <meta property="article:tag" content="cybersecurity" />
+    <meta property="article:tag" content="hacking" />
+    <meta property="article:tag" content="osint" />
+    <meta property="article:tag" content="github" />
+    <meta property="article:tag" content="bug bounties" />
+    <meta property="article:tag" content="technical" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How I made $10K in bug bounties from GitHub secret leaks" />
+    <meta name="twitter:description" content="Hacker can steal leaked API keys, passwords, and customer data from GitHub to login to servers, steal personal information, and rack up absurd AWS charges. This article explains shows common types of secrets that users post and how to find them." />
+    <meta name="twitter:url" content="https://tillsongalloway.com/finding-sensitive-information-on-github/" />
+    <meta name="twitter:image" content="https://tillsongalloway.com/content/images/2020/05/Screen-Shot-2020-05-11-at-1.05.48-AM.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Tillson Galloway" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="cybersecurity, hacking, osint, github, bug bounties, technical" />
+    <meta name="twitter:site" content="@tillson_" />
+    <meta name="twitter:creator" content="@tillson" />
+    <meta property="og:image:width" content="1684" />
+    <meta property="og:image:height" content="686" />
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Tales of a Postgraduate Nothing",
+        "url": "https://tillsongalloway.com/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://tillsongalloway.com/favicon.ico",
+            "width": 48,
+            "height": 48
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Tillson Galloway",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://tillsongalloway.com/content/images/2018/12/Zyq6A600_400x400.jpg",
+            "width": 400,
+            "height": 400
+        },
+        "url": "https://tillsongalloway.com/author/tillson/",
+        "sameAs": [
+            "https://twitter.com/tillson"
+        ]
+    },
+    "headline": "How I made $10K in bug bounties from GitHub secret leaks",
+    "url": "https://tillsongalloway.com/finding-sensitive-information-on-github/",
+    "datePublished": "2020-05-10T21:05:56.000Z",
+    "dateModified": "2020-05-26T21:21:11.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://tillsongalloway.com/content/images/2020/05/Screen-Shot-2020-05-11-at-1.05.48-AM.png",
+        "width": 1684,
+        "height": 686
+    },
+    "keywords": "cybersecurity, hacking, osint, github, bug bounties, technical",
+    "description": "Hacker can steal leaked API keys, passwords, and customer data from GitHub to login to servers, steal personal information, and rack up absurd AWS charges. This article explains shows common types of secrets that users post and how to find them.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://tillsongalloway.com/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 3.17" />
+    <link rel="alternate" type="application/rss+xml" title="Tales of a Postgraduate Nothing" href="../rss/index.html" />
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K3L6XN4');</script>
+<!-- End Google Tag Manager -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2111385271642266" crossorigin="anonymous"></script>
+    
+</head>
+<body class="post-template tag-cybersecurity tag-hacking tag-osint tag-github tag-bug-bounties tag-technical">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3L6XN4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <div class="site-wrapper">
+
+
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+                <a class="site-nav-logo" href="../index.html">Tales of a Postgraduate Nothing</a>
+    </div>
+    <div class="site-nav-right">
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post tag-cybersecurity tag-hacking tag-osint tag-github tag-bug-bounties tag-technical featured ">
+
+            <header class="post-full-header">
+                <section class="post-full-meta">
+                    <time class="post-full-meta-date" datetime="2020-05-10">10 May 2020</time>
+                        <span class="date-divider">/</span> <a href="../tag/cybersecurity/index.html">cybersecurity</a>
+                </section>
+                <h1 class="post-full-title">How I made $10K in bug bounties from GitHub secret leaks</h1>
+            </header>
+
+            <figure class="post-full-image" style="background-image: url(../content/images/2020/05/Screen-Shot-2020-05-11-at-1.05.48-AM.png)">
+            </figure>
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p>API keys, passwords, and customer data are accidentally posted to GitHub every day. </p><p>Hackers use these keys to login to servers, steal personal information, and rack up absurd AWS charges. GitHub leaks can cost a company thousands–or even millions–of dollars in damages. Open-source intelligence gathering on GitHub has become a powerful arrow in every security researcher's quiver: researchers from NC State even wrote an <a href="https://www.ndss-symposium.org/wp-content/uploads/2019/02/ndss2019_04B-3_Meli_paper.pdf">academic paper</a> on the subject. </p><p>This article, written for both bug bounty hunters and enterprise infosec teams, demonstrates common types of sensitive information (secrets) that users post to public GitHub repositories as well as heuristics for finding them. The techniques in this article can be applied to <a href="https://gist.github.com/">GitHub Gist</a> snippets, too.</p><p>In the last year, I've earned nearly $10,000 from bug bounty programs on <a href="https://hackerone.com">HackerOne</a> without even visiting programs' websites thanks to these techniques. I've submitted over 30 Coordinated Disclosure reports to vulnerable corporations, including eight Fortune 500 companies. </p><p><strong>I've also released <a href="https://github.com/tillson/git-hound">GitHound</a>, an open-source tool designed to automate the process of finding keys across GitHub.</strong> GitHound isn't limited to a single user or organization: it sifts through all of GitHub, using Code Search queries as an entrypoint into repositories and then using context, regexes, and some other neat tricks to find secrets.</p><h2 id="github-code-search">GitHub Code Search</h2><p>Before we get into the automated tools and bug bounty strategies, let's talk about Code Search. </p><p>GitHub provides <a href="https://github.com/search">rich code searching</a> that scans public GitHub repositories (some content is omitted, <a href="https://help.github.com/en/github/searching-for-information-on-github/searching-code#considerations-for-code-search">like forks and non-default branches</a>). Queries can be simple like <code>uberinternal.com</code> or can contain multi-word strings like  <code>"Authorization: Bearer"</code>. Searches can even target specific files (<code>filename: vim_settings.xml</code>) or specific languages (<code>language:SQL</code>). Searches can also contain certain <a href="https://help.github.com/en/github/searching-for-information-on-github/understanding-the-search-syntax">boolean qualifiers</a> like <code>NOT</code> and <code>&gt;</code>. </p><p>Knowing the rules of GitHub code search enables us to craft search dorks: queries that are designed to find sensitive information. GitHub dorks can be found online, but the best dorks are the ones that you create yourself.</p><p>For example, <code>filename: vim_settings.xml</code> (<a href="https://github.com/search?q=filename%3Avim_settings.xml&amp;type=Code">try it!</a>) targets <a href="https://www.jetbrains.com/help/idea/settings-tools-settings-repository.html">IntelliJ settings files</a><a>.</a> Interestingly, the <code>vim_settings.xml</code> file contains recent <strong>copy-pasted strings encoded in Base64</strong>. I recently made $2400 from a bug bounty with this dork: SaaS API keys and customer information were exposed in <code>vim_settings.xml</code>.</p><figure class="kg-card kg-image-card"><img src="../content/images/2020/05/vim_settings.png" class="kg-image"></figure><p><code>vim_settings.xml</code> only contains recently copy-pasted strings, but we can exploit the repository's commit history to find the <strong>entire copy-paste history.</strong> Just clone the repository and run <a href="https://gist.github.com/tillson/620e8ef87bc057f25b0a27c423433fda">this 14-line script</a>, and the user's activity will be at your fingertips. GitHound also finds and scans base64 encoded strings for secrets, even in commit history.</p><p>By the way: with <a href="https://github.com/search?q=%22vim_settings.xml%22&amp;type=Commits">a GitHub commit search dork</a>, we can quickly scan all 500,000 of commits that edit <code>vim_settings.xml</code>.</p><figure class="kg-card kg-image-card"><img src="../content/images/2020/05/commits.png" class="kg-image"></figure><h2 id="search-heuristics-for-bug-bounty-hunters">Search Heuristics for Bug Bounty Hunters</h2><p>GitHub dorks broadly find sensitive information, but<strong> what if we want to look for information about a specific company?</strong> GitHub has millions of repositories and even more files, so we'll need some heuristics to narrow down the search space. </p><p>To start finding sensitive information, identify a target. </p><p>I've found that the best way to start is to <strong>find domains or subdomains that identify corporate infrastructure.</strong> </p><p>Searching for <code>company.com</code> probably won't provide useful results: many companies release audited open-source projects that aren't likely to contain secrets. Less-used domains and subdomains are more interesting. This includes specific hosts like <code>jira.company.com</code> as well as more general second-level and lower-level domains. It's more efficient to find a pattern than a single domain: <code>corp.somecompany.com</code>, <code>somecompany.net</code>, or <code>companycorp.com</code> are more likely to appear only in an employee's configuration files. </p><p>The usual suspects for open-source intelligence and domain reconnaissance help here:</p><ul><li><a href="https://github.com/TheRook/subbrute">Subbrute</a> - Python tool for brute-forcing subdomains</li><li><a href="https://www.threatcrowd.org/">ThreatCrowd</a> - Given a domain, find associated domains through multiple OSINT techniques</li><li><a href="https://censys.io/">Censys.io</a> - Given a domain, find SSL certificates using it</li></ul><p>GitHound can help with subdomain discovery too: add a custom regex <code>\.company\.com</code> and run GitHound with the <code>--regex-file</code> flag.</p><p>After finding a host or pattern to search, play around on GitHub search with it (I always do this before using automated tools). There are a few questions I like to ask myself here:</p><ol><li><strong>How many results came up?</strong> If there are over 100 pages, I'll likely need to find a better query to start with (GitHub limits code search results to 100 pages).</li><li><strong>What kind of results came up?</strong> If the results are mostly (intentionally) open-source projects and people using public APIs, then I may be able to refine the search to eliminate those.</li><li><strong>What happens if I change the language?</strong> <code>language:Shell</code> and <code>language:SQL</code> may have interesting results.</li><li><strong>Do these results reveal any other domains or hosts?</strong> Results in the first few pages will often include a reference to another domain (e.g. searching for <code>jira.uber.com</code> may reveal the existence of another domain entirely, like <code>uberinternal.com</code>).</li></ol><p>I spend most of my time in this step.</p><p>It's crucial that the search space is well-defined and accurate. Automated tools and manual searching will be faster and more accurate with the proper query.</p><p>Once I find results that seem interesting based on the criteria above, I run it through <a href="https://github.com/tillson/git-hound">GitHound</a><a> </a>with <code>--dig-files</code> and <code>--dig-commits</code> to look the entire repository and its history. </p><p><code>echo "uberinternal.com" | ./git-hound --dig-files --dig-commits</code></p><p><code>echo "uber.com" | ./git-hound --dig-files --language-file languages.txt --dig-commits</code></p><p><code>echo "uber.box.net" | ./git-hound --dig-files --dig-commits</code></p><p>GitHound also locates interesting files that simply searching won't find, like <code>.zip</code> or <code>.xlsx</code> files. Importantly, I also manually go through results since automated tools often miss customer information, sensitive code, and username/password combinations. Oftentimes, this will reveal more subdomains or other interesting patterns that will give me ideas for more search queries. It's important to remember that open-source intelligence is a recursive process.</p><p>This process almost always finds results. Leaks usually fall into one of these categories (ranked from most to least impactful):</p><ol><li><strong>SaaS API keys</strong> - Companies rarely impose IP restrictions on APIs. AWS, Slack, Google, and other API keys are liquid gold. These are usually found in config files, bash history files, and scripts.</li><li><strong>Server/database credentials</strong> - These are usually behind a firewall, so they're less impactful. Usually found in config files, bash history files, and scripts.</li><li><strong>Customer/employee information</strong> - These hide in XLSX, CSV, and XML files and range from emails all the way to billing information and employee performance reviews.</li><li><strong>Data science scripts</strong> - SQL queries, R scripts, and Jupyter projects can reveal sensitive information. These repos also tend to have "test data" files hanging around.</li><li><strong>Hostnames/metadata</strong> - The most common result. Most companies don't consider this a vulnerability, but they can help refine future searches</li></ol><h2 id="workflow-for-specific-api-providers">Workflow for Specific API Providers</h2><p>Dorks can also be created to target specific API providers and their endpoints. This is especially useful for companies creating automated checks for their users' API keys. With knowledge of an API key's <strong>context</strong> and <strong>syntax</strong>, the search space can be significantly reduced. </p><p>With knowledge of the specific API provider, we can obtain all of the keys that match the API provider's regex and are in an API call context and then we can check them for validity using an internal database or an API endpoint. </p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2020/05/graph.png" class="kg-image"><figcaption>A workflow for finding secrets for a single API provider</figcaption></figure><p>For example, suppose a company (HalCorp) provides an API for users to read and write to their account. By making our own HalCorp account, we discover that API keys are in the form <code>[a-f]{4}-[a-f]{4}-[a-f]{4}</code>. </p><pre><code># Python
+import halapi
+api = halapi.API()
+api.authenticate_by_key('REDACTED')
+
+# REST API with curl
+curl -X POST -H "HALCorp-Key: REDACTED" https://api.halcorp.biz/userinfo
+</code></pre><p>Armed with this information, we can compose our own GitHub dorks for HalCorp API responses: </p><pre><code># Python
+"authenticate_by_key" "halapi" language:python
+
+# REST API
+"HALCorp-Key"
+</code></pre><p>With a tool like <a href="https://github.com/tillson/git-hound">GitHound</a><a>,</a> we can use regex matching to find strings that match the API key's regex and output them to a file:</p><p><code>echo "HALCorp-Key" | git-hound --dig-files --dig-commits --many-results --regex-file halcorp-api-keys.txt --results-only &gt; api_tokens.txt </code></p><p>Now that we have a file containing potential  API tokens, and we can check these against a database for validity (<strong>do not do this if you don't have written permission from the API provider</strong>).</p><p>In the case of HalCorp, we can write a bash script that reads from stdin, checks the <code>api.halcorp.biz/userinfo</code> endpoint, and outputs the response.</p><p><code>cat api_tokens.txt | bash checktoken.bash</code></p><h2 id="remediation">Remediation</h2><p>Although awareness of secret exposure on GitHub has increased, more and more sensitive data are published each day. </p><p>Amazon Web Services have begun <a href="https://aws.amazon.com/blogs/security/how-to-receive-notifications-when-your-aws-accounts-root-access-keys-are-used/">notifying users if their API keys are posted online</a>. GitHub has added <a href="https://github.com/features/security">security features</a> that scan public repositories for common keys. These solutions are merely bandaids, however. To limit secret leaks from source code, we must update API frameworks and DevOps methodologies to prevent API keys from being stored in Git/SVN repositories entirely. Software like <a href="https://www.vaultproject.io/">Vault</a> safely stores production keys and some API providers, like Google Cloud Platform, have updated their libraries to force API keys to be stored in a file by default.</p><p>Fully eradicating exposure of sensitive information is a more difficult problem: how can customer information be fully detected? What if it's in a Word, Excel, or compiled file? More research must be conducted in this field to study the extent of the problem and its solution.</p>
+                </div>
+            </section>
+
+
+            <footer class="post-full-footer">
+
+
+
+<section class="author-card">
+        <img class="author-profile-image" src="../content/images/2018/12/Zyq6A600_400x400.jpg" alt="Tillson Galloway" />
+    <section class="author-card-content">
+        <h4 class="author-card-name"><a href="../author/tillson/index.html">Tillson Galloway</a></h4>
+            <p>Georgia Tech &#x27;22, iOS and Web developer, Information Security enthusiast
+</p>
+    </section>
+</section>
+<div class="post-full-footer-right">
+    <a class="author-card-button" href="../author/tillson/index.html">Read More</a>
+</div>
+
+
+            </footer>
+
+
+        </article>
+
+    </div>
+</main>
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+                <article class="read-next-card"
+
+                >
+                    <header class="read-next-card-header">
+                        <small class="read-next-card-header-sitetitle">&mdash; Tales of a Postgraduate Nothing &mdash;</small>
+                        <h3 class="read-next-card-header-title"><a href="../tag/cybersecurity/index.html">cybersecurity</a></h3>
+                    </header>
+                    <div class="read-next-divider"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/></svg>
+</div>
+                    <div class="read-next-card-content">
+                        <ul>
+                            <li><a href="../porter-gaud-ctf-2017/index.html">Running an Introductory Level CTF: Insight into Porter-Gaud CTF 2017</a></li>
+                        </ul>
+                    </div>
+                    <footer class="read-next-card-footer">
+                        <a href="../tag/cybersecurity/index.html">1 post →</a>
+                    </footer>
+                </article>
+
+
+                <article class="post-card post tag-philosophy tag-literature tag-taoism no-image no-image">
+    <div class="post-card-content">
+        <a class="post-card-content-link" href="../taoism-in-slaughterhouse-five/index.html">
+            <header class="post-card-header">
+                    <span class="post-card-tags">philosophy</span>
+                <h2 class="post-card-title">Nothing Lasts, but Nothing is Lost: Taoist Ideology in Slaughterhouse Five’s Tralfamadorians</h2>
+            </header>
+            <section class="post-card-excerpt">
+                <p>The Tralfamadorian worldview of Slaughterhouse Five fame surrenders to time's unrelenting waters, its central axiom being that “the moment simply is."  Tralfamadorian physics lead us to question our perceptions of time.</p>
+            </section>
+        </a>
+        <footer class="post-card-meta">
+
+            <ul class="author-list">
+                <li class="author-list-item">
+
+                    <div class="author-name-tooltip">
+                        Tillson Galloway
+                    </div>
+
+                        <a href="../author/tillson/index.html" class="static-avatar"><img class="author-profile-image" src="../content/images/2018/12/Zyq6A600_400x400.jpg" alt="Tillson Galloway" /></a>
+                </li>
+            </ul>
+        </footer>
+    </div>
+</article>
+
+        </div>
+    </div>
+</aside>
+
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="../index.html">
+            <span>Tales of a Postgraduate Nothing</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">&mdash;</span>
+    <div class="floating-header-title">How I made $10K in bug bounties from GitHub secret leaks</div>
+    <progress id="reading-progress" class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="../index.html">© 2020 Tillson Galloway</a></section>
+                <nav class="site-footer-nav">
+                    <a href="../index.html">Home</a>
+                    <a href="https://github.com/tillson" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://linkedin.com/in/tillson" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://twitter.com/tillson_" target="_blank" rel="noopener">Twitter</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script>
+        var images = document.querySelectorAll('.kg-gallery-image img');
+        images.forEach(function (image) {
+            var container = image.closest('.kg-gallery-image');
+            var width = image.attributes.width.value;
+            var height = image.attributes.height.value;
+            var ratio = width / height;
+            container.style.flex = ratio + ' 1 0%';
+        })
+    </script>
+
+
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="../assets/built/jquery.fitvids.js?v=a98c78c9f1"></script>
+
+
+    <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('#reading-progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+
+});
+</script>
+
+
+
+
+</body>
+</html>
